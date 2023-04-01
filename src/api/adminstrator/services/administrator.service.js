@@ -1,4 +1,4 @@
-const Administrator = require("../models/administrator.schema");
+const Administrator = require("../../../models/administrator.schema");
 const createAdministrator = (obj) => {
   return Administrator.create(obj);
 };

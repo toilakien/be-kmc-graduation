@@ -1,6 +1,6 @@
 const adm_service = require("../services/administrator.service");
-const enum_status = require("../enum/status-code.enum");
-const e_d_code = require("../utils/en_decodepassword");
+const enum_status = require("../../../enum/status-code.enum");
+const e_d_code = require("../../../utils/en_decodepassword");
 var jwt = require("jsonwebtoken");
 const login = async (req, res, next) => {
   const { email, password } = req.body;
@@ -53,11 +53,8 @@ const verifyToken = (req, res, next) => {
   }
 };
 const register = async (req, res) => {
-  console.log("!");
   const { email } = req.body;
-  console.log("!!");
   const password = e_d_code.fn_encode(req?.body?.password);
-  console.log(("!!!", password));
   try {
     const user = await adm_service.findOneAdministrator({ email });
     if (!user) {

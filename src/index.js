@@ -36,8 +36,11 @@ const DB = process.env.MONGO_URI;
 
 //router
 
-const administratorRouter = require("./routes/administrator.router");
+const administratorRouter = require("./api/adminstrator/routes/administrator.router");
 app.use("/api/v1/administrator", administratorRouter);
+const doctorRouter = require("./api/doctor/routes/doctor.router");
+app.use("/api/v1/doctor", doctorRouter);
+
 
 /*================================*/
 

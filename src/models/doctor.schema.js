@@ -1,0 +1,48 @@
+const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
+const Doctor = new Schema(
+    {
+        firstName:{
+            type: String,
+            required: [true, "First name is required"],
+            minHeight: 1,
+            trim: true,
+        },
+        lastName:{
+            type: String,
+            required: [true, "Last name is required"],
+            minHeight: 1,
+            trim: true,
+        },
+        email: {
+            type: String,
+            required: [true, "Email is required"],
+            minHeight: 4,
+            trim: true,
+        },
+        gender:{
+            type:Number,
+            data:[0,1],
+            required:[true,'Gender is required']
+        },
+        phoneNumber:{
+            type:Number,
+            required:[true,'Phone number is required']
+        },dateOfBirth:{
+            type:Date
+        },
+        address:{
+            type:String,
+            required:[true,'Address is required']
+        }
+
+    },
+    {
+        timestamps: true,
+    },
+    {
+        collection: "doctors",
+    }
+);
+const DoctorSchema = mongoose.model("Doctor", Doctor);
+module.exports =DoctorSchema;
