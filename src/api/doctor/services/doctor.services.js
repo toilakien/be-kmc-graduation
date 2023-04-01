@@ -11,6 +11,9 @@ const findAllDoctor = () => {
 const findByIdAndDeleteDoctor = (id) => {
     return Doctor.findByIdAndDelete(id);
 };
+const findByIdAndUpdateDoctor = (id,params) => {
+    return Doctor.findByIdAndUpdate(id,params);
+};
 const findByIdDoctor = (id) => {
     return Doctor.findById(id);
 };
@@ -20,4 +23,5 @@ module.exports = {
     findAllDoctor,
     findByIdAndDeleteDoctor,
     findByIdDoctor,
+    findByIdAndUpdateDoctor
 };
