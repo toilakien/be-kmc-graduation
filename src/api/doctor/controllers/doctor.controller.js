@@ -104,9 +104,28 @@ const editDoctor=async (req,res,next)=>{
 
 
 }
+const getDetailDoctors=async (req,res,next)=>{
+    try{
+        const id = req.params.id;
+        const doctor = await doctor_service.findByIdDoctor(id);
+        if(doctor){
+            return res.status(enum_status.OK).json({
+                message:'Success',
+                doctor
+            })
+        }else{
+            return res.status(enum_status.BAD_REQUEST).json({
+                message:'error'
+            })
+        }
+    }catch (error){
+        return res.status(enum_status.INTERNAL_SERVER_ERROR).json(error)
+    }
+}
 module.exports={
     createDoctorCtl,
     getAllDoctors,
     deleteDoctor,
-    editDoctor
+    editDoctor,
+    getDetailDoctors
 }

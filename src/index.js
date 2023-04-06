@@ -40,7 +40,8 @@ const administratorRouter = require("./api/adminstrator/routes/administrator.rou
 app.use("/api/v1/administrator", administratorRouter);
 const doctorRouter = require("./api/doctor/routes/doctor.router");
 app.use("/api/v1/doctor", doctorRouter);
-
+const medicineRouter = require("./api/medicine/routes/medicine.router");
+app.use("/api/v1/medicine", medicineRouter);
 
 /*================================*/
 
