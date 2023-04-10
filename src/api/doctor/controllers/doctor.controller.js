@@ -1,6 +1,5 @@
 const doctor_service = require("../services/doctor.services");
 const enum_status = require("../../../enum/status-code.enum");
-const adm_service = require("../../adminstrator/services/administrator.service");
 
 
 const createDoctorCtl = async (req, res) => {
@@ -34,7 +33,8 @@ const createDoctorCtl = async (req, res) => {
 };
 const getAllDoctors=async (req,res,next)=>{
     try{
-        const doctors = await doctor_service.findAllDoctor();
+        const {search}=req.query;
+        const doctors = await doctor_service.findAllDoctor(search);
         if(doctors){
             return res.status(enum_status.OK).json({
                 message:'Success',
@@ -122,6 +122,8 @@ const getDetailDoctors=async (req,res,next)=>{
         return res.status(enum_status.INTERNAL_SERVER_ERROR).json(error)
     }
 }
+
+
 module.exports={
     createDoctorCtl,
     getAllDoctors,
