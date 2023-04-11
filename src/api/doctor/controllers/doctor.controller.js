@@ -41,10 +41,11 @@ const createDoctorCtl = async (req, res) => {
 };
 const getAllDoctors = async (req, res, next) => {
   let perPage = 9;
+  let { search, page } = req.query;
   const pageCount = await Doctor.find({});
   const a = Math.ceil(Number(pageCount.length) / Number(perPage));
-  let { search, page } = req.query;
-  if (search === "undefined") {
+
+  if (!search) {
     Doctor.find()
       .skip((Number(page) - 1) * Number(perPage))
       .limit(Number(perPage))
@@ -73,7 +74,7 @@ const getAllDoctors = async (req, res, next) => {
           message: "Success",
           doctors: data,
           currentPage: Number(page),
-          pageCount: a,
+          pageCount: Math.ceil(Number(data.length) / Number(perPage)),
         });
       })
       .catch((error) => {
