@@ -2,7 +2,6 @@ const medicine_service = require("../services/medicine.services");
 const enum_status = require("../../../enum/status-code.enum");
 const createMedicineCtl = async (req, res) => {
   const { name, typeOfMedicine, description, price, quantity } = req.body;
-  console.log(req.body);
   try {
     const medicine = await medicine_service.findOneMedicine({ name });
     console.log(medicine);
@@ -30,6 +29,7 @@ const createMedicineCtl = async (req, res) => {
   }
 };
 const getAllMedicines = async (req, res, next) => {
+  const {search,page}=req.query;
   try {
     const medicines = await medicine_service.findAllMedicine();
     if (medicines) {

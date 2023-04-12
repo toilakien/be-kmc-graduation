@@ -9,6 +9,7 @@ const createDoctorCtl = async (req, res) => {
     lastName,
     email,
     gender,
+    worktime,
     phoneNumber,
     dateOfBirth,
     address,
@@ -21,6 +22,7 @@ const createDoctorCtl = async (req, res) => {
         firstName,
         lastName,
         gender,
+        worktime,
         phoneNumber,
         dateOfBirth,
         address,
@@ -41,46 +43,66 @@ const createDoctorCtl = async (req, res) => {
 };
 const getAllDoctors = async (req, res, next) => {
   let perPage = 9;
-  let { search, page } = req.query;
+  let { search, page,time } = req.query;
   const pageCount = await Doctor.find({});
   const a = Math.ceil(Number(pageCount.length) / Number(perPage));
-
-  if (!search) {
+  if(!search && !time){
     Doctor.find()
-      .skip((Number(page) - 1) * Number(perPage))
-      .limit(Number(perPage))
-      .then((data) => {
-        res.status(enum_status.OK).json({
-          message: "Success",
-          doctors: data,
-          currentPage: Number(page),
-          pageCount: a,
+        .skip((Number(page) - 1) * Number(perPage))
+        .limit(Number(perPage))
+        .then((data) => {
+          res.status(enum_status.OK).json({
+            message: "Success",
+            doctors: data,
+            currentPage: Number(page),
+            pageCount: a,
+          });
+        })
+        .catch((error) => {
+          return res.status(enum_status.INTERNAL_SERVER_ERROR).json(error);
         });
+
+  }else {
+    if(!search&&time){
+      Doctor.find({worktime: time})
+          .skip((Number(page) - 1) * Number(perPage))
+          .limit(Number(perPage))
+          .then((data) => {
+            res.status(enum_status.OK).json({
+              message: "Success",
+              doctors: data,
+              currentPage: Number(page),
+              pageCount: Math.ceil(Number(data.length) / Number(perPage)),
+            });
+          })
+          .catch((error) => {
+            return res.status(enum_status.INTERNAL_SERVER_ERROR).json(error);
+          });
+    }
+    if(!time&&search){
+      Doctor.find({
+        $or: [
+          { firstName: new RegExp(search, "i") },
+          { lastName: new RegExp(search, "i") },
+        ],
       })
-      .catch((error) => {
-        return res.status(enum_status.INTERNAL_SERVER_ERROR).json(error);
-      });
-  } else {
-    Doctor.find({
-      $or: [
-        { firstName: new RegExp(search, "i") },
-        { lastName: new RegExp(search, "i") },
-      ],
-    })
-      .skip((Number(page) - 1) * Number(perPage))
-      .limit(Number(perPage))
-      .then((data) => {
-        res.status(enum_status.OK).json({
-          message: "Success",
-          doctors: data,
-          currentPage: Number(page),
-          pageCount: Math.ceil(Number(data.length) / Number(perPage)),
-        });
-      })
-      .catch((error) => {
-        return res.status(enum_status.INTERNAL_SERVER_ERROR).json(error);
-      });
+          .skip((Number(page) - 1) * Number(perPage))
+          .limit(Number(perPage))
+          .then((data) => {
+            res.status(enum_status.OK).json({
+              message: "Success",
+              doctors: data,
+              currentPage: Number(page),
+              pageCount: Math.ceil(Number(data.length) / Number(perPage)),
+            });
+          })
+          .catch((error) => {
+            return res.status(enum_status.INTERNAL_SERVER_ERROR).json(error);
+          });
+    }
   }
+
+
 };
 const deleteDoctor = async (req, res, next) => {
   try {
