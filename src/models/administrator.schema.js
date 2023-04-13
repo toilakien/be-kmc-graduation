@@ -14,6 +14,26 @@ const Administrator = new Schema(
       required: [true, "password is required"],
       trim: true,
     },
+    name: {
+      type: String,
+      trim: true,
+    },
+    dateOfBirth: {
+      type: Date,
+      trim: true,
+    },
+    image: {
+      type: String,
+      trim: true,
+    },
+    address: {
+      type: String,
+      trim: true,
+    },
+    gender: {
+      type: Number,
+      enum: [1, 2],
+    },
   },
   {
     timestamps: true,

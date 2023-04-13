@@ -18,8 +18,12 @@ const login = async (req, res, next) => {
           data: {
             token: token,
             user: {
-              email,
-              avatar: "",
+              email: acountTrue.email,
+              name: acountTrue.name,
+              dateOfBirth: acountTrue.dateOfBirth,
+              address: acountTrue.address,
+              image: acountTrue.image,
+              gender: acountTrue.gender,
             },
           },
         });
@@ -53,7 +57,7 @@ const verifyToken = (req, res, next) => {
   }
 };
 const register = async (req, res) => {
-  const { email } = req.body;
+  const { email, name, dateOfBirth, image, address, gender } = req.body;
   const password = e_d_code.fn_encode(req?.body?.password);
   try {
     const user = await adm_service.findOneAdministrator({ email });
@@ -61,12 +65,26 @@ const register = async (req, res) => {
       const newUser = {
         email: email,
         password: password,
+        name,
+        dateOfBirth,
+        image,
+        address,
+        gender,
       };
-      console.log("newUser", newUser);
+      const u = {
+        email: email,
+        name,
+        dateOfBirth,
+        image,
+        address,
+        gender,
+      };
       adm_service.createAdministrator(newUser);
-      return res.status(200).json("Create successfully !");
+      return res
+        .status(200)
+        .json({ message: "Create successfully !", user: u });
     } else {
-      return res.status(404).json("email already exists!");
+      return res.status(404).json({ message: "Email already exists!" });
     }
   } catch (error) {
     res.status(404).json(error);
