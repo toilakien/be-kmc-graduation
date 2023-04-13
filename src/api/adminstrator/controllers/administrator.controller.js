@@ -2,6 +2,7 @@ const adm_service = require("../services/administrator.service");
 const enum_status = require("../../../enum/status-code.enum");
 const e_d_code = require("../../../utils/en_decodepassword");
 var jwt = require("jsonwebtoken");
+const doctor_service = require("../../doctor/services/doctor.services");
 const login = async (req, res, next) => {
   const { email, password } = req.body;
   try {
@@ -17,14 +18,7 @@ const login = async (req, res, next) => {
           message: "Success",
           data: {
             token: token,
-            user: {
-              email: acountTrue.email,
-              name: acountTrue.name,
-              dateOfBirth: acountTrue.dateOfBirth,
-              address: acountTrue.address,
-              image: acountTrue.image,
-              gender: acountTrue.gender,
-            },
+            user: {id:acountTrue._id},
           },
         });
       } else {
@@ -105,6 +99,67 @@ const getAllAdministrator = async (req, res, next) => {
     });
   }
 };
+const getDetail = async (req, res, next) => {
+  try {
+    const { id } =req.params;
+    const Admin = await adm_service.findByIdAdministrator(id);
+    const adminDisplay={
+      email:Admin.email,
+      name:Admin.name,
+      dateOfBirth:Admin.dateOfBirth,
+      image:Admin.image,
+      address:Admin.address,
+      gender:Admin.gender
+
+    }
+    res.status(enum_status.OK).json({
+      status: "Success",
+      administrator: adminDisplay,
+    });
+  } catch (error) {
+    res.status(enum_status.BAD_REQUEST).json({
+      status: "Fail",
+      message: error,
+    });
+  }
+};
+const EditAdminstrator = async (req, res, next) => {
+  try {
+    const { id } =req.params;
+    const { name,email,dateOfBirth,image,address,gender } =req.body;
+    const Admin = await adm_service.findByIdAdministrator(id);
+    if (name) {
+      Admin.name = name;
+    }
+    if (email) {
+      Admin.email = email;
+    }
+    if (dateOfBirth) {
+      Admin.dateOfBirth = dateOfBirth;
+    }
+    if (gender) {
+      Admin.gender = gender;
+    }
+    if (address) {
+      Admin.address = address;
+    }
+    if (image) {
+      Admin.image = image;
+    }
+
+
+    await adm_service.findByIdAndUpdateAdministrator(id, Admin);
+    res.status(enum_status.OK).json({
+      message: "Success",
+      adminstrator: Admin,
+    });
+  } catch (error) {
+    res.status(enum_status.BAD_REQUEST).json({
+      status: "Fail",
+      message: error,
+    });
+  }
+};
 const deleteAdministrator = async (req, res, next) => {
   try {
     const id = req.params.id;
@@ -123,8 +178,10 @@ const deleteAdministrator = async (req, res, next) => {
 };
 module.exports = {
   verifyToken,
+  EditAdminstrator,
   login,
   register,
+  getDetail,
   getAllAdministrator,
-  deleteAdministrator,
+  deleteAdministrator
 };

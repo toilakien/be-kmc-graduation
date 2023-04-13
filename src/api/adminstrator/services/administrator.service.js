@@ -11,6 +11,9 @@ const findAllAdministrator = () => {
 const findByIdAndDeleteAdministrator = (id) => {
   return Administrator.findByIdAndDelete(id);
 };
+const findByIdAndUpdateAdministrator = (id,params) => {
+  return Administrator.findByIdAndUpdate(id,params);
+};
 const findByIdAdministrator = (id) => {
   return Administrator.findById(id);
 };
@@ -20,4 +23,5 @@ module.exports = {
   findAllAdministrator,
   findByIdAndDeleteAdministrator,
   findByIdAdministrator,
+  findByIdAndUpdateAdministrator
 };
