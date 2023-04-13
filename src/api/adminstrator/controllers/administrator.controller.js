@@ -18,7 +18,7 @@ const login = async (req, res, next) => {
           message: "Success",
           data: {
             token: token,
-            user: {id:acountTrue._id},
+            user: { id: acountTrue._id },
           },
         });
       } else {
@@ -101,17 +101,16 @@ const getAllAdministrator = async (req, res, next) => {
 };
 const getDetail = async (req, res, next) => {
   try {
-    const { id } =req.params;
+    const { id } = req.params;
     const Admin = await adm_service.findByIdAdministrator(id);
-    const adminDisplay={
-      email:Admin.email,
-      name:Admin.name,
-      dateOfBirth:Admin.dateOfBirth,
-      image:Admin.image,
-      address:Admin.address,
-      gender:Admin.gender
-
-    }
+    const adminDisplay = {
+      email: Admin.email,
+      name: Admin.name,
+      dateOfBirth: Admin.dateOfBirth,
+      image: Admin.image,
+      address: Admin.address,
+      gender: Admin.gender,
+    };
     res.status(enum_status.OK).json({
       status: "Success",
       administrator: adminDisplay,
@@ -124,9 +123,10 @@ const getDetail = async (req, res, next) => {
   }
 };
 const EditAdminstrator = async (req, res, next) => {
+  console.log(typeof req.files[0].filename);
   try {
-    const { id } =req.params;
-    const { name,email,dateOfBirth,image,address,gender } =req.body;
+    const { id } = req.params;
+    const { name, email, dateOfBirth, address, gender } = req.body;
     const Admin = await adm_service.findByIdAdministrator(id);
     if (name) {
       Admin.name = name;
@@ -143,10 +143,9 @@ const EditAdminstrator = async (req, res, next) => {
     if (address) {
       Admin.address = address;
     }
-    if (image) {
-      Admin.image = image;
+    if (req.files[0].filename) {
+      Admin.image = req.files[0].filename;
     }
-
 
     await adm_service.findByIdAndUpdateAdministrator(id, Admin);
     res.status(enum_status.OK).json({
@@ -183,5 +182,5 @@ module.exports = {
   register,
   getDetail,
   getAllAdministrator,
-  deleteAdministrator
+  deleteAdministrator,
 };

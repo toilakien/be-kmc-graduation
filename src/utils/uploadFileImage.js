@@ -17,7 +17,6 @@ var upload = multer({
       );
     },
   }),
-
   fileFilter: (req, file, callback) => {
     let ext = path.extname(file.originalname);
     if (ext !== ".png" && ext !== ".jpg" && ext !== ".gif" && ext !== ".jpeg") {
