@@ -123,7 +123,6 @@ const getDetail = async (req, res, next) => {
   }
 };
 const EditAdminstrator = async (req, res, next) => {
-  console.log(typeof req.files[0].filename);
   try {
     const { id } = req.params;
     const { name, email, dateOfBirth, address, gender } = req.body;
@@ -143,11 +142,11 @@ const EditAdminstrator = async (req, res, next) => {
     if (address) {
       Admin.address = address;
     }
-    if (req.files[0].filename) {
+    if (req.files[0]) {
       Admin.image = req.files[0].filename;
     }
-
     await adm_service.findByIdAndUpdateAdministrator(id, Admin);
+
     res.status(enum_status.OK).json({
       message: "Success",
       adminstrator: Admin,
