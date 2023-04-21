@@ -67,6 +67,25 @@ const deleteMedicine=async (req,res,next)=>{
     res.status(enum_status.INTERNAL_SERVER_ERROR).json(e);
   }
 }
+const getDetailMedicine=async (req,res,next)=>{
+  try{
+    const {id}=req.params;
+    const medicine=await Medicine.findOne({id});
+    if(medicine){
+      res.status(enum_status.OK).json({
+        message:"Success",
+        medicine:medicine
+      })
+    }else{
+      res.status(enum_status.BAD_REQUEST).json({
+        message:"Medicine not find !"
+      })
+    }
+
+  }catch (e){
+    res.status(enum_status.INTERNAL_SERVER_ERROR).json(e);
+  }
+}
 const editMedicine=async (req,res,next)=>{
 
   try{
@@ -112,5 +131,6 @@ module.exports = {
   createMedicineCtl,
   getAllMedicines,
   deleteMedicine,
-  editMedicine
+  editMedicine,
+  getDetailMedicine
 };
