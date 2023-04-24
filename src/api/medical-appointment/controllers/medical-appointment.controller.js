@@ -4,7 +4,6 @@ const MedicalAppointment = require("../../../models/medical-appointment.schema")
 const createMedicalAppointmentCtl = async (req, res) => {
   try {
     const { patient, doctor, dateAppointment } = req.body;
-    console.log(dateAppointment);
     if (patient && doctor && dateAppointment) {
       let x = Math.floor(Math.random() * 10000 + 1);
       let a = await MedicalAppointment.create({

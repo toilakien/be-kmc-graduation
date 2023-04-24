@@ -29,23 +29,43 @@ const createPatientCtl = async (req, res) => {
 };
 const getAllPatient = async (req, res) => {
   let perPage = 9;
-  const { page } = req.query;
-  const pageCount = await Patient.find({});
-  const a = Math.ceil(Number(pageCount.length) / Number(perPage));
-  await Patient.find()
-    .skip((Number(page) - 1) * Number(perPage))
-    .limit(Number(perPage))
-    .then((data) => {
-      res.status(enum_status.OK).json({
-        message: "Success",
-        patients: data,
-        currentPage: Number(page),
-        pageCount: a,
+  const { page, search } = req.query;
+  console.log(search);
+  if (search) {
+    const pageCount = await Patient.find({});
+    const a = Math.ceil(Number(pageCount.length) / Number(perPage));
+    await Patient.find({ name: new RegExp(search, "i") })
+      .skip((Number(page) - 1) * Number(perPage))
+      .limit(Number(perPage))
+      .then((data) => {
+        res.status(enum_status.OK).json({
+          message: "Success",
+          patients: data,
+          currentPage: Number(page),
+          pageCount: a,
+        });
+      })
+      .catch((error) => {
+        return res.status(enum_status.INTERNAL_SERVER_ERROR).json(error);
       });
-    })
-    .catch((error) => {
-      return res.status(enum_status.INTERNAL_SERVER_ERROR).json(error);
-    });
+  } else {
+    const pageCount = await Patient.find({});
+    const a = Math.ceil(Number(pageCount.length) / Number(perPage));
+    await Patient.find()
+      .skip((Number(page) - 1) * Number(perPage))
+      .limit(Number(perPage))
+      .then((data) => {
+        res.status(enum_status.OK).json({
+          message: "Success",
+          patients: data,
+          currentPage: Number(page),
+          pageCount: a,
+        });
+      })
+      .catch((error) => {
+        return res.status(enum_status.INTERNAL_SERVER_ERROR).json(error);
+      });
+  }
 };
 const deletePatient = async (req, res) => {
   try {
