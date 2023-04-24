@@ -44,6 +44,8 @@ const medicineRouter = require("./api/medicine/routes/medicine.router");
 app.use("/api/v1/medicine", medicineRouter);
 const patientRouter = require("./api/patient/routes/patient.router");
 app.use("/api/v1/patient", patientRouter);
+const MedicalAppointmentRouter = require("./api/medical-appointment/routes/medical-appointment.router");
+app.use("/api/v1/medical-appointment", MedicalAppointmentRouter);
 
 /*================================*/
 
