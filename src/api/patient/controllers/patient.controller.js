@@ -30,7 +30,6 @@ const createPatientCtl = async (req, res) => {
 const getAllPatient = async (req, res) => {
   let perPage = 9;
   const { page, search } = req.query;
-  console.log(search);
   if (search) {
     const pageCount = await Patient.find({});
     const a = Math.ceil(Number(pageCount.length) / Number(perPage));

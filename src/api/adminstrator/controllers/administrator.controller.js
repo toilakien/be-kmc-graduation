@@ -2,7 +2,7 @@ const adm_service = require("../services/administrator.service");
 const enum_status = require("../../../enum/status-code.enum");
 const e_d_code = require("../../../utils/en_decodepassword");
 var jwt = require("jsonwebtoken");
-const doctor_service = require("../../doctor/services/doctor.services");
+const Admin = require("../../../models/administrator.schema");
 const login = async (req, res, next) => {
   const { email, password } = req.body;
   try {
@@ -75,23 +75,34 @@ const register = async (req, res) => {
       };
       adm_service.createAdministrator(newUser);
       return res
-        .status(200)
-        .json({ message: "Create successfully !", user: u });
+        .status(enum_status.CREATED)
+        .json({ message: "Create successfully !", administrator: u });
     } else {
-      return res.status(404).json({ message: "Email already exists!" });
+      return res
+        .status(enum_status.BAD_REQUEST)
+        .json({ message: "Email already exists!" });
     }
   } catch (error) {
-    res.status(404).json(error);
+    res.status(enum_status.INTERNAL_SERVER_ERROR).json(error);
   }
 };
 
 const getAllAdministrator = async (req, res, next) => {
   try {
-    const Admins = await adm_service.findAllAdministrator();
-    res.status(enum_status.OK).json({
-      status: "Success",
-      administrator: Admins,
-    });
+    const { search } = req.query;
+    if (search) {
+      const Admins = await Admin.find({ name: new RegExp(search, "i") });
+      res.status(enum_status.OK).json({
+        status: "Success",
+        administrators: Admins,
+      });
+    } else {
+      const Admins = await adm_service.findAllAdministrator();
+      res.status(enum_status.OK).json({
+        status: "Success",
+        administrators: Admins,
+      });
+    }
   } catch (error) {
     res.status(enum_status.BAD_REQUEST).json({
       status: "Fail",
