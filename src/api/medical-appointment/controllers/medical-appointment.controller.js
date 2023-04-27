@@ -34,7 +34,16 @@ const getAllMedicalAppointmentCtl = async (req, res) => {
     medicalAppointments: medical,
   });
 };
+const getTotalMedicalAppointment = async (req, res) => {
+  const medical = await MedicalAppointment.find({});
+  res.status(enum_status.OK).json({
+    message: "Success",
+    total: medical.length
+  });
+}
+
 module.exports = {
   createMedicalAppointmentCtl,
   getAllMedicalAppointmentCtl,
+  getTotalMedicalAppointment
 };

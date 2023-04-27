@@ -179,11 +179,24 @@ const getDetailDoctors = async (req, res, next) => {
     return res.status(enum_status.INTERNAL_SERVER_ERROR).json(error);
   }
 };
-
+const getTotalDoctor = async (req, res, next) => {
+  try{
+    const doc=await Doctor.find({})
+    console.log(doc)
+    res.status(enum_status.OK).json({
+      message:'Success',
+      total:doc.length
+    })
+  }catch (e){
+    console.log(e)
+    e&&res.json(e)
+  }
+}
 module.exports = {
   createDoctorCtl,
   getAllDoctors,
   deleteDoctor,
   editDoctor,
   getDetailDoctors,
+  getTotalDoctor
 };
