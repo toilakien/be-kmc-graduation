@@ -18,7 +18,7 @@ const login = async (req, res, next) => {
           message: "Success",
           data: {
             token: token,
-            user: { id: acountTrue._id },
+            user: { id: acountTrue._id, email: acountTrue.email },
           },
         });
       } else {
@@ -34,7 +34,27 @@ const login = async (req, res, next) => {
     res.status(enum_status.NOT_FOUND).json(error);
   }
 };
-
+const changePassword = async (req, res, next) => {
+  try {
+    const { old_password, email, new_password } = req.body;
+    const newPassword = e_d_code.fn_encode(new_password);
+    const acountTrue = await adm_service.findOneAdministrator({ email });
+    console.log(acountTrue);
+    if (e_d_code.fn_checkcode(old_password, acountTrue.password)) {
+      acountTrue.password = newPassword;
+      await Admin.findByIdAndUpdate(acountTrue._id, acountTrue);
+      res.status(enum_status.OK).json({
+        message: "Change password successfully!",
+      });
+    } else {
+      res.status(enum_status.BAD_REQUEST).json({
+        message: "Password old enter fail!",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
 const verifyToken = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (authHeader) {
@@ -192,5 +212,6 @@ module.exports = {
   register,
   getDetail,
   getAllAdministrator,
+  changePassword,
   deleteAdministrator,
 };
