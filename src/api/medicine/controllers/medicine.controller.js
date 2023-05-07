@@ -30,18 +30,34 @@ const createMedicineCtl = async (req, res) => {
   }
 };
 const getAllMedicines = async (req, res, next) => {
-  const { search } = req.query;
   try {
-    const medicines = await medicine_service.findAllMedicine();
-    if (medicines) {
-      return res.status(enum_status.OK).json({
-        message: "Success",
-        medicines,
+    const { search } = req.query;
+    if (search) {
+      const medicines = await Medicine.find({
+        name: new RegExp(search, "i"),
       });
+      if (medicines) {
+        return res.status(enum_status.OK).json({
+          message: "Success",
+          medicines,
+        });
+      } else {
+        return res.status(enum_status.BAD_REQUEST).json({
+          message: "error",
+        });
+      }
     } else {
-      return res.status(enum_status.BAD_REQUEST).json({
-        message: "error",
-      });
+      const medicines = await medicine_service.findAllMedicine();
+      if (medicines) {
+        return res.status(enum_status.OK).json({
+          message: "Success",
+          medicines,
+        });
+      } else {
+        return res.status(enum_status.BAD_REQUEST).json({
+          message: "error",
+        });
+      }
     }
   } catch (error) {
     return res.status(enum_status.INTERNAL_SERVER_ERROR).json(error);

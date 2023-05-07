@@ -32,7 +32,7 @@ const Doctor = new Schema(
       required: [true, "Worktime is required"],
     },
     phoneNumber: {
-      type: Number,
+      type: String,
       required: [true, "Phone number is required"],
     },
     dateOfBirth: {

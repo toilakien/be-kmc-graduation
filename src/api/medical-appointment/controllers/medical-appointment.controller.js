@@ -1,5 +1,6 @@
 const enum_status = require("../../../enum/status-code.enum");
 const MedicalAppointment = require("../../../models/medical-appointment.schema");
+const Doctor = require("../../../models/doctor.schema");
 
 const createMedicalAppointmentCtl = async (req, res) => {
   try {
@@ -38,12 +39,24 @@ const getTotalMedicalAppointment = async (req, res) => {
   const medical = await MedicalAppointment.find({});
   res.status(enum_status.OK).json({
     message: "Success",
-    total: medical.length
+    total: medical.length,
   });
-}
-
+};
+const getDetailMedicalAppointment = async (req, res) => {
+  const { id } = req.params;
+  const medical = await MedicalAppointment.findById(id);
+  const doctor = await Doctor.findOne({ name: medical.doctor });
+  res.status(enum_status.OK).json({
+    message: "Success",
+    detail: {
+      ...medical._doc,
+      phoneNumberDoctor: doctor.phoneNumber,
+    },
+  });
+};
 module.exports = {
   createMedicalAppointmentCtl,
+  getDetailMedicalAppointment,
   getAllMedicalAppointmentCtl,
-  getTotalMedicalAppointment
+  getTotalMedicalAppointment,
 };
