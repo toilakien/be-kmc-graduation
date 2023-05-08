@@ -56,15 +56,40 @@ const getDetailMedicalAppointment = async (req, res) => {
   });
 };
 const filterByMonth = async (req, res) => {
-  const { month } = req.query;
   try {
     const list = await MedicalAppointment.find({});
-    const filterMonth = list.filter((e) => {
-      return Number(e.createdAt.getMonth() + 1) === Number(month);
+    const filterMonthOne = list.filter((e) => {
+      return Number(e.createdAt.getMonth() + 1) === 1;
+    });
+    const filterMonthTwo = list.filter((e) => {
+      return Number(e.createdAt.getMonth() + 1) === 2;
+    });
+    const filterMonthThree = list.filter((e) => {
+      return Number(e.createdAt.getMonth() + 1) === 3;
+    });
+    const filterMonthFour = list.filter((e) => {
+      return Number(e.createdAt.getMonth() + 1) === 4;
+    });
+    const filterMonthFive = list.filter((e) => {
+      return Number(e.createdAt.getMonth() + 1) === 5;
+    });
+    const filterMonthSix = list.filter((e) => {
+      return Number(e.createdAt.getMonth() + 1) === 6;
+    });
+    const filterMonthSeven = list.filter((e) => {
+      return Number(e.createdAt.getMonth() + 1) === 7;
     });
     res.status(enum_status.OK).json({
       message: "Success",
-      filterList: filterMonth,
+      filterList: [
+        filterMonthOne.length,
+        filterMonthTwo.length,
+        filterMonthThree.length,
+        filterMonthFour.length,
+        filterMonthFive.length,
+        filterMonthSix.length,
+        filterMonthSeven.length,
+      ],
     });
     console.log(filterMonth);
   } catch (error) {}

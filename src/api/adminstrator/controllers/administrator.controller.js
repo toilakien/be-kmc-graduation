@@ -39,7 +39,6 @@ const changePassword = async (req, res, next) => {
     const { old_password, email, new_password } = req.body;
     const newPassword = e_d_code.fn_encode(new_password);
     const acountTrue = await adm_service.findOneAdministrator({ email });
-    console.log(acountTrue);
     if (e_d_code.fn_checkcode(old_password, acountTrue.password)) {
       acountTrue.password = newPassword;
       await Admin.findByIdAndUpdate(acountTrue._id, acountTrue);

@@ -70,7 +70,6 @@ const deletePatient = async (req, res) => {
   try {
     const { id } = req.params;
     const patient = await Patient.findById(id);
-    console.log(patient);
     if (patient) {
       await Patient.findByIdAndDelete(id);
       res.status(enum_status.OK).json({

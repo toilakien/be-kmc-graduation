@@ -108,7 +108,6 @@ const deleteDoctor = async (req, res, next) => {
     const doctor = await doctor_service.findByIdDoctor(id);
     if (doctor) {
       const removeDoctor = await doctor_service.findByIdAndDeleteDoctor(id);
-      console.log(removeDoctor);
       res.status(enum_status.OK).json({
         status: "Success",
         doctor,
@@ -180,23 +179,22 @@ const getDetailDoctors = async (req, res, next) => {
   }
 };
 const getTotalDoctor = async (req, res, next) => {
-  try{
-    const doc=await Doctor.find({})
-    console.log(doc)
+  try {
+    const doc = await Doctor.find({});
     res.status(enum_status.OK).json({
-      message:'Success',
-      total:doc.length
-    })
-  }catch (e){
-    console.log(e)
-    e&&res.json(e)
+      message: "Success",
+      total: doc.length,
+    });
+  } catch (e) {
+    console.log(e);
+    e && res.json(e);
   }
-}
+};
 module.exports = {
   createDoctorCtl,
   getAllDoctors,
   deleteDoctor,
   editDoctor,
   getDetailDoctors,
-  getTotalDoctor
+  getTotalDoctor,
 };
