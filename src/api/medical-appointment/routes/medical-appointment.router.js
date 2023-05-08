@@ -5,6 +5,7 @@ MedicalAppointmentRouter.get(
   "/total",
   MedicalAppointmentCtl.getTotalMedicalAppointment
 );
+MedicalAppointmentRouter.get("/byMonth", MedicalAppointmentCtl.filterByMonth);
 MedicalAppointmentRouter.post(
   "/",
   MedicalAppointmentCtl.createMedicalAppointmentCtl

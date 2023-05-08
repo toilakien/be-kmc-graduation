@@ -138,10 +138,22 @@ const editPatient = async (req, res) => {
     res.status(enum_status.BAD_REQUEST).json(e);
   }
 };
+const getTotalPatient = async (req, res) => {
+  try {
+    const patient = await Patient.find({});
+    res.status(enum_status.OK).json({
+      message: "Success",
+      total: patient.length,
+    });
+  } catch (e) {
+    console.log(e);
+  }
+};
 module.exports = {
   getAllPatient,
   createPatientCtl,
   deletePatient,
   editPatient,
   getDetailPatient,
+  getTotalPatient,
 };

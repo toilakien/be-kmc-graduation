@@ -1,6 +1,7 @@
 const enum_status = require("../../../enum/status-code.enum");
 const MedicalAppointment = require("../../../models/medical-appointment.schema");
 const Doctor = require("../../../models/doctor.schema");
+const { number } = require("joi");
 
 const createMedicalAppointmentCtl = async (req, res) => {
   try {
@@ -54,9 +55,24 @@ const getDetailMedicalAppointment = async (req, res) => {
     },
   });
 };
+const filterByMonth = async (req, res) => {
+  const { month } = req.query;
+  try {
+    const list = await MedicalAppointment.find({});
+    const filterMonth = list.filter((e) => {
+      return Number(e.createdAt.getMonth() + 1) === Number(month);
+    });
+    res.status(enum_status.OK).json({
+      message: "Success",
+      filterList: filterMonth,
+    });
+    console.log(filterMonth);
+  } catch (error) {}
+};
 module.exports = {
   createMedicalAppointmentCtl,
   getDetailMedicalAppointment,
   getAllMedicalAppointmentCtl,
   getTotalMedicalAppointment,
+  filterByMonth,
 };
