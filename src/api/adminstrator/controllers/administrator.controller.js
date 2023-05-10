@@ -110,13 +110,17 @@ const getAllAdministrator = async (req, res, next) => {
   try {
     const { search } = req.query;
     if (search) {
-      const Admins = await Admin.find({ name: new RegExp(search, "i") });
+      const Admins = await Admin.find({ name: new RegExp(search, "i") }).sort({
+        createdAt: -1,
+      });
       res.status(enum_status.OK).json({
         status: "Success",
         administrators: Admins,
       });
     } else {
-      const Admins = await adm_service.findAllAdministrator();
+      const Admins = await adm_service
+        .findAllAdministrator()
+        .sort({ createdAt: -1 });
       res.status(enum_status.OK).json({
         status: "Success",
         administrators: Admins,
@@ -204,7 +208,23 @@ const deleteAdministrator = async (req, res, next) => {
     });
   }
 };
+const resetPasswordForSupperAdmin = async (req, res) => {
+  try {
+    const { new_password, email } = req.body;
+    const newPassword = e_d_code.fn_encode(new_password);
+    const accAdmin = await adm_service.findOneAdministrator({ email });
+    accAdmin.password = newPassword;
+    await Admin.findByIdAndUpdate(accAdmin._id, accAdmin);
+    res.status(enum_status.OK).json({
+      message: "Reset password successfully!",
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(enum_status.BAD_REQUEST);
+  }
+};
 module.exports = {
+  resetPasswordForSupperAdmin,
   verifyToken,
   EditAdminstrator,
   login,

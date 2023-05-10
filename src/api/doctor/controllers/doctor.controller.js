@@ -50,6 +50,7 @@ const getAllDoctors = async (req, res, next) => {
     Doctor.find()
       .skip((Number(page) - 1) * Number(perPage))
       .limit(Number(perPage))
+      .sort({ createdAt: -1 })
       .then((data) => {
         res.status(enum_status.OK).json({
           message: "Success",
@@ -66,6 +67,7 @@ const getAllDoctors = async (req, res, next) => {
       Doctor.find({ worktime: time })
         .skip((Number(page) - 1) * Number(perPage))
         .limit(Number(perPage))
+        .sort({ createdAt: -1 })
         .then((data) => {
           res.status(enum_status.OK).json({
             message: "Success",
@@ -87,6 +89,7 @@ const getAllDoctors = async (req, res, next) => {
       })
         .skip((Number(page) - 1) * Number(perPage))
         .limit(Number(perPage))
+        .sort({ createdAt: -1 })
         .then((data) => {
           res.status(enum_status.OK).json({
             message: "Success",

@@ -36,6 +36,7 @@ const getAllPatient = async (req, res) => {
     await Patient.find({ name: new RegExp(search, "i") })
       .skip((Number(page) - 1) * Number(perPage))
       .limit(Number(perPage))
+      .sort({ createdAt: -1 })
       .then((data) => {
         res.status(enum_status.OK).json({
           message: "Success",
@@ -53,6 +54,7 @@ const getAllPatient = async (req, res) => {
     await Patient.find()
       .skip((Number(page) - 1) * Number(perPage))
       .limit(Number(perPage))
+      .sort({ createdAt: -1 })
       .then((data) => {
         res.status(enum_status.OK).json({
           message: "Success",

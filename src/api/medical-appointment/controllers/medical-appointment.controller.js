@@ -30,12 +30,47 @@ const createMedicalAppointmentCtl = async (req, res) => {
   }
 };
 const getAllMedicalAppointmentCtl = async (req, res) => {
-  const medical = await MedicalAppointment.find({});
+  const medical = await MedicalAppointment.find({}).sort({ createdAt: -1 });
   res.status(enum_status.OK).json({
     message: "Success",
     medicalAppointments: medical,
   });
 };
+const editMedicalAppointment = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { patient, doctor, dateAppointment } = req.body;
+    const medicalAppointment = await MedicalAppointment.findOne({ id });
+    if (medicalAppointment === null) {
+      res.status(enum_status.BAD_REQUEST).json({
+        message: "MedicalAppointment need edit not find !",
+      });
+    }
+    if (patient) {
+      medicalAppointment.patient = patient;
+    }
+    if (doctor) {
+      medicalAppointment.doctor = doctor;
+    }
+    if (dateAppointment) {
+      medicalAppointment.dateAppointment = dateAppointment;
+    }
+
+    const update = await MedicalAppointment.findByIdAndUpdate(
+      id,
+      medicalAppointment
+    );
+    res.status(enum_status.OK).json({
+      message: "Success",
+      medicalAppointment: medicalAppointment,
+    });
+  } catch (e) {
+    if (e) {
+      res.status(enum_status.INTERNAL_SERVER_ERROR).json(e);
+    }
+  }
+};
+
 const getTotalMedicalAppointment = async (req, res) => {
   const medical = await MedicalAppointment.find({});
   res.status(enum_status.OK).json({
@@ -54,6 +89,23 @@ const getDetailMedicalAppointment = async (req, res) => {
       phoneNumberDoctor: doctor.phoneNumber,
     },
   });
+};
+const deleteMedical = async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (id) {
+      await MedicalAppointment.findByIdAndDelete(id);
+      res.status(enum_status.OK).json({
+        message: "Success!",
+      });
+    } else {
+      res.status.status(enum_status.BAD_REQUEST).json({
+        message: "No exits id",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+  }
 };
 const filterByMonth = async (req, res) => {
   try {
@@ -95,6 +147,8 @@ const filterByMonth = async (req, res) => {
   } catch (error) {}
 };
 module.exports = {
+  deleteMedical,
+  editMedicalAppointment,
   createMedicalAppointmentCtl,
   getDetailMedicalAppointment,
   getAllMedicalAppointmentCtl,

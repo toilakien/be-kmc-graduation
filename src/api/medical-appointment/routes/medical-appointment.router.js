@@ -10,6 +10,11 @@ MedicalAppointmentRouter.post(
   "/",
   MedicalAppointmentCtl.createMedicalAppointmentCtl
 );
+MedicalAppointmentRouter.put(
+  "/:id",
+  MedicalAppointmentCtl.editMedicalAppointment
+);
+MedicalAppointmentRouter.delete("/:id", MedicalAppointmentCtl.deleteMedical);
 MedicalAppointmentRouter.get(
   "/",
   MedicalAppointmentCtl.getAllMedicalAppointmentCtl

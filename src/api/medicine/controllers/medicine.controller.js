@@ -35,7 +35,7 @@ const getAllMedicines = async (req, res, next) => {
     if (search) {
       const medicines = await Medicine.find({
         name: new RegExp(search, "i"),
-      });
+      }).sort({ createdAt: -1 });
       if (medicines) {
         return res.status(enum_status.OK).json({
           message: "Success",
@@ -47,7 +47,9 @@ const getAllMedicines = async (req, res, next) => {
         });
       }
     } else {
-      const medicines = await medicine_service.findAllMedicine();
+      const medicines = await medicine_service
+        .findAllMedicine()
+        .sort({ createdAt: -1 });
       if (medicines) {
         return res.status(enum_status.OK).json({
           message: "Success",
