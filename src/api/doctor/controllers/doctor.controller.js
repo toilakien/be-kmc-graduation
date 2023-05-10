@@ -193,6 +193,45 @@ const getTotalDoctor = async (req, res, next) => {
     e && res.json(e);
   }
 };
+const filterByMonth = async (req, res) => {
+  try {
+    const list = await Doctor.find({});
+    const filterMonthOne = list.filter((e) => {
+      return Number(e.createdAt.getMonth() + 1) === 1;
+    });
+    const filterMonthTwo = list.filter((e) => {
+      return Number(e.createdAt.getMonth() + 1) === 2;
+    });
+    const filterMonthThree = list.filter((e) => {
+      return Number(e.createdAt.getMonth() + 1) === 3;
+    });
+    const filterMonthFour = list.filter((e) => {
+      return Number(e.createdAt.getMonth() + 1) === 4;
+    });
+    const filterMonthFive = list.filter((e) => {
+      return Number(e.createdAt.getMonth() + 1) === 5;
+    });
+    const filterMonthSix = list.filter((e) => {
+      return Number(e.createdAt.getMonth() + 1) === 6;
+    });
+    const filterMonthSeven = list.filter((e) => {
+      return Number(e.createdAt.getMonth() + 1) === 7;
+    });
+    res.status(enum_status.OK).json({
+      message: "Success",
+      filterList: [
+        filterMonthOne.length,
+        filterMonthTwo.length,
+        filterMonthThree.length,
+        filterMonthFour.length,
+        filterMonthFive.length,
+        filterMonthSix.length,
+        filterMonthSeven.length,
+      ],
+    });
+    console.log(filterMonth);
+  } catch (error) {}
+};
 module.exports = {
   createDoctorCtl,
   getAllDoctors,
@@ -200,4 +239,5 @@ module.exports = {
   editDoctor,
   getDetailDoctors,
   getTotalDoctor,
+  filterByMonth,
 };

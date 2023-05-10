@@ -3,6 +3,8 @@ const patientRouter = express.Router();
 
 const patientCtl = require("../controllers/patient.controller");
 patientRouter.get("/total", patientCtl.getTotalPatient);
+patientRouter.get("/byMonth", patientCtl.filterByMonth);
+
 patientRouter.get("/", patientCtl.getAllPatient);
 patientRouter.post("/", patientCtl.createPatientCtl);
 patientRouter.delete("/:id", patientCtl.deletePatient);
