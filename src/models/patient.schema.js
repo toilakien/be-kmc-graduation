@@ -8,19 +8,19 @@ const Patient = new Schema(
       minHeight: 1,
       trim: true,
     },
-      gender:{
-        type:Number,
-          enum:[0,1]
-      },
+    gender: {
+      type: Number,
+      enum: [0, 1],
+    },
     age: {
       type: Number,
       required: [true, "Age is required"],
       trim: true,
     },
-      symptom:{
-          type: String,
-          trim: true,
-      },
+    symptom: {
+      type: String,
+      trim: true,
+    },
     address: {
       type: String,
       trim: true,

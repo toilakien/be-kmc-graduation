@@ -107,26 +107,34 @@ const getDetailPatient = async (req, res) => {
 const editPatient = async (req, res) => {
   try {
     const { id } = req.params;
+    console.log(id);
     const { name, gender, age, symptom, address, code } = req.body;
-    const patient = await Patient.findOne({ id });
+
+    const patient = await Patient.findById(id);
+    console.log(patient);
     if (name) {
       patient.name = name;
     }
-    if (gender) {
+
+    if (gender === 0 || gender === 1) {
       patient.gender = gender;
     }
+
     if (name) {
       patient.name = name;
     }
+
     if (age) {
       patient.age = age;
     }
+
     if (symptom) {
       patient.symptom = symptom;
     }
     if (address) {
       patient.address = address;
     }
+
     if (code) {
       patient.code = code;
     }

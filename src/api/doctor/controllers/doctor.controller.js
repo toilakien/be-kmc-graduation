@@ -132,6 +132,7 @@ const editDoctor = async (req, res, next) => {
       phoneNumber,
       dateOfBirth,
       address,
+      worktime,
     } = req.body;
     if (firstName) {
       doctor.firstName = firstName;
@@ -148,11 +149,14 @@ const editDoctor = async (req, res, next) => {
     if (dateOfBirth) {
       doctor.dateOfBirth = dateOfBirth;
     }
-    if (gender) {
+    if (gender === 0 || gender === 1) {
       doctor.gender = gender;
     }
     if (address) {
       doctor.address = address;
+    }
+    if (worktime === 1 || worktime === 2) {
+      doctor.worktime = worktime;
     }
     await doctor_service.findByIdAndUpdateDoctor(id, doctor);
     res.status(enum_status.OK).json({
